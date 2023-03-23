@@ -19,7 +19,6 @@ public class BooksStepDefs {
     public void the_user_navigates_to_page(String moduleName) {
         new DashBoardPage().navigateModule(moduleName);
 
-
     }
 
 
@@ -33,10 +32,7 @@ public class BooksStepDefs {
 
     @Then("user should be able to see following categories")
     public void user_should_be_able_to_see_following_categories(List<String> expectedCategoryList) {
-
-
         Assert.assertEquals(expectedCategoryList, actualCategoryList);
-
     }
 
 
@@ -51,62 +47,14 @@ public class BooksStepDefs {
 
     @Then("verify book categories must match book categories table from db")
     public void verify_book_categories_must_match_book_categories_table_from_db() {
-        String query = "select name from book_categories";
-        //run query to get data from db
-        DB_Util.runQuery(query);
-        //store the information inside the list
-        List<String> expectedCategoryList = DB_Util.getColumnDataAsList(1);
-        System.out.println("expectedCategoryList = " + expectedCategoryList);
+// rub query to get data from db
+        DB_Util.runQuery("select name from book_categories");
+//store the info inside the list
+        List<String> expectedBookCategories = DB_Util.getColumnDataAsList("name");
+        System.out.println("expectedBookCategories = " + expectedBookCategories);//
+
         //compare UI vs DB
-        Assert.assertEquals("Verify category list is matching",actualCategoryList,expectedCategoryList);
-    }
-
-    @Then("book information must match the database for {string}")
-    public void book_information_must_match_the_database_for(String bookName) {
-        BrowserUtil.waitFor(3);
-        //UI Steps
-        //we need to get information from ui to compare with database
-        //System.out.println("UI Bookname: "+bookPage.bookName.getText());
-        System.out.println("UI Bookname: "+bookPage.bookName.getAttribute("value"));
-        /*
-            1.getText() --> it will return text from provided element
-            2.getAttribute("value") --> if there is input box we are gonna use getAttribute("value") to get data from it.
-         */
-
-        //create ui variables and save information
-        String actualBookName = bookPage.bookName.getAttribute("value");
-        String actualAuthorName = bookPage.author.getAttribute("value");
-        String actualISBN = bookPage.isbn.getAttribute("value");
-        String actualYear = bookPage.year.getAttribute("value");
-        String actualDesc = bookPage.description.getAttribute("value");
-
-        System.out.println("actualISBN = " + actualISBN);
-
-        //get same information from database
-        String query = "select name,isbn,year,author,description from books\n" +
-                "where name = '"+bookName+"'";
-
-        DB_Util.runQuery(query);
-        Map<String, String> bookInfo = DB_Util.getRowMap(1);
-
-        String expectedBookName = bookInfo.get("name");
-        String expectedAuthorName =bookInfo.get("author");
-        String expectedISBN = bookInfo.get("isbn");
-        String expectedYear = bookInfo.get("year");
-        String expectedDesc = bookInfo.get("description");
-
-        System.out.println("expectedAuthorName = " + expectedAuthorName);
-        System.out.println("expectedISBN = " + expectedISBN);
-
-
-        //compare them
-        Assert.assertEquals(actualBookName,expectedBookName);
-        Assert.assertEquals(actualAuthorName,expectedAuthorName);
-        Assert.assertEquals(actualISBN,expectedISBN);
-        Assert.assertEquals(actualYear,expectedYear);
-        Assert.assertEquals(bookPage.description.getAttribute("value"),bookInfo.get("description"));
-
-
+        Assert.assertEquals(actualCategoryList,expectedBookCategories);
     }
 
 }
