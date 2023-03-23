@@ -9,3 +9,6 @@ where is_returned=0;
 select * from book_categories;
 
 select name from book_categories;
+
+select name,isbn,year,author,description from books
+where name = 'Agile Testing';

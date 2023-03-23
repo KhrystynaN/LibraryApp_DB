@@ -57,4 +57,50 @@ public class BooksStepDefs {
         Assert.assertEquals(actualCategoryList,expectedBookCategories);
     }
 
+    @Then("book information must match the database for {string}")
+    public void book_information_must_match_the_database_for(String bookName) {
+        BrowserUtil.waitFor(2);
+        //UI steps:
+        ///we need to get information from ui to compare with database
+       // System.out.println("UI BookName:" + bookPage.bookName.getText());
+        System.out.println("UI Bookname: " + bookPage.bookName.getAttribute("value"));
+
+        //getText() --> it will return text from provided element
+        //getAttribute("value") --> if there is inputBox we are gonna use getAttribute("value") to get data from it
+
+        //craete UI variable and save information
+        String actualBookName = bookPage.bookName.getAttribute("value");
+        String actualAuthorName = bookPage.author.getAttribute("value");
+        String actualISBN = bookPage.isbn.getAttribute("value");
+        String actualYear = bookPage.year.getAttribute("value");
+        String actualDesc = bookPage.description.getAttribute("value");
+
+        System.out.println(actualISBN);
+        //get same information from database
+
+        String query = "select name,isbn,year,author,description from books\n" +
+                "where name = '"+bookName+"'";
+
+        DB_Util.runQuery(query);
+        Map<String, String> bookInfo = DB_Util.getRowMap(1);
+
+        String expectedBookName = bookInfo.get("name");
+        String expectedAuthorName =bookInfo.get("author");
+        String expectedISBN = bookInfo.get("isbn");
+        String expectedYear = bookInfo.get("year");
+        String expectedDesc = bookInfo.get("description");
+
+        System.out.println("expectedAuthorName = " + expectedAuthorName);
+        System.out.println("expectedISBN = " + expectedISBN);
+
+
+        //compare them
+        Assert.assertEquals(actualBookName,expectedBookName);
+        Assert.assertEquals(actualAuthorName,expectedAuthorName);
+        Assert.assertEquals(actualISBN,expectedISBN);
+        Assert.assertEquals(actualYear,expectedYear);
+        Assert.assertEquals(bookPage.description.getAttribute("value"),bookInfo.get("description"));
+
+    }
+
 }
