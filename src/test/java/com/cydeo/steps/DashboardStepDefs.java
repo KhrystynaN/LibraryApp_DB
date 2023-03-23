@@ -41,38 +41,30 @@ public class DashboardStepDefs
         //This scenario Database result is expected.
 
         //Connect the same database (library2)
-        //DB_Util.createConnection(); connection will be created by @db hooks
+       // DB_Util.createConnection(); //connection will be created by @db hooks
         //run query for each of the result (3 different queries)
 
         //BOOKS
         DB_Util.runQuery("select count(*) from books");
-
-        String expectedBookNumbers = DB_Util.getFirstRowFirstColumn();
+       String expectedBookNumbers = DB_Util.getFirstRowFirstColumn();
         System.out.println("expectedBookNumbers = " + expectedBookNumbers);
-        //compare results with UI results(Actual results)
+        //compare results with UI results (Actual results)
         Assert.assertEquals(actualBookNumbers,expectedBookNumbers);
 
         //USERS
-        DB_Util.runQuery("select count(*) from users");
-        String expectedUserNumbers = DB_Util.getFirstRowFirstColumn();
-        System.out.println("expectedUserNumbers = " + expectedUserNumbers);
-        //compare results
-        Assert.assertEquals(actualUserNumbers,expectedUserNumbers);
+        DB_Util.runQuery("SELECT count(*) from users");
+        String expectedUsersNumber = DB_Util.getFirstRowFirstColumn();
+        System.out.println("expectedUsersNumber = " + expectedUsersNumber);
+        Assert.assertEquals(actualUserNumbers,expectedUsersNumber);
 
         //BORROWED BOOKS
-        String query = "select count(*) from book_borrow\n" +
-                "where is_returned = 0";
-
-        DB_Util.runQuery(query);
-
-        String expectedBorrowedBookNumbers= DB_Util.getFirstRowFirstColumn();
+        DB_Util.runQuery("select count(*) from book_borrow where is_returned=0");
+        String expectedBorrowedBookNumbers = DB_Util.getFirstRowFirstColumn();
         System.out.println("expectedBorrowedBookNumbers = " + expectedBorrowedBookNumbers);
-
         Assert.assertEquals(actualBorrowedBookNumbers,expectedBorrowedBookNumbers);
 
         //close connection
-        //DB_Util.destroy(); connection will be closed  by @db hooks
-
+       // DB_Util.destroy();  connection will be close by @db hooks
     }
 
 
