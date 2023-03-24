@@ -1,6 +1,6 @@
 Feature: Login Functionality
 
-  @db
+  @wip @db
   Scenario: Login with valid credentials
     Given the user logged in  "librarian56@library" and "libraryUser"
     When user gets username  from user fields
