@@ -15,3 +15,5 @@ where name = 'Agile Testing';
 
 select * from users
 where email = 'librarian56@library';
+
+select status from users where email='joshua.huel@yahoo.com';
